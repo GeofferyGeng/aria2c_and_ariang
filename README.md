@@ -25,7 +25,6 @@ If any infringement please contact me to delete! forgive me for this is my first
 地址不再赘述
 
 未来更新方向：将文本汉化
-
              完善设置窗口和关于窗口，因为目前每次启动会初始化
              
 欢迎提出问题和bug
