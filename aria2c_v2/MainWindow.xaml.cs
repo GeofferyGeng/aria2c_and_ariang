@@ -39,7 +39,7 @@ namespace aria2c_v2
         public void startaria2()
         {
             string aria2path = System.IO.Path.Combine(System.Environment.CurrentDirectory, @"aria2c.exe");
-            string config = "--enable-rpc --console-log-level=error --rpc-allow-origin-all=true --rpc-listen-port=6800 --split=256 --max-concurrent-downloads=5";
+            string config = "--enable-rpc --console-log-level=error --rpc-allow-origin-all=true --rpc-listen-port=6800 --split=256 --save-session-interval=60 --max-concurrent-downloads=5 --input-file=aria2.session --save-session=aria2.session";
 
             if (!File.Exists("aria2.session"))
             {
