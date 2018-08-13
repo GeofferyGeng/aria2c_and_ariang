@@ -16,7 +16,8 @@ Future update：convert all text to text
 Welcome to riase questions or issues
 
 If any infringement please contact me to delete! Forgive me for this is my first time to update my code.
-     
+## attention
+based on framework v4.6.2 ，if it doesn't work on your windows,please check whether you hava installed that or not. I will change the based framework version in the future version.
 ## preview    
 ![](http://chuantu.biz/t6/356/1534125086x-1566688688.png)  
      
@@ -32,7 +33,10 @@ ariaNG https://github.com/mayswind/AriaNg
 2、完善配置，因为目前每次启动会初始化
 
 3、完善设置窗口，提供多种配置方式
+## 注意
+本项目基于framework 4.6.2.如果它在你的电脑上不能正常工作，请检查是否安装这项服务。（win10-程序与功能-打开和关闭windows功能找到勾选4.6高级功能）
 
+之后在更新中会更改到受众更多的4.5
 ## 其他          
 欢迎提出问题和bug
 
