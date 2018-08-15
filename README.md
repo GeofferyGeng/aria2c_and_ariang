@@ -1,4 +1,7 @@
 # aria2c_and_aria
+## 8102年8月15日 15th,August,8102
+### 经过连续两天的高强度工作我已经快要gg了 (:_」∠) ，之后不时或者有重大bug才更新了吧
+### I am going to die.Update until there is a big bug.
 ## introduction
 This is a simple combination of aria2c and ariaNG,thanks for the following repositories.
 
@@ -12,7 +15,7 @@ More tool that need to be used together : baidudl https://github.com/Kyle-Kyle/b
 ## future update
 Future update：
 
-convert all text to text
+~~convert all text to text~~
 
 ~~perfect the settingwindow and aboutwindow，current erro：Initialize when start~~  **finished！**
 ## others               
@@ -31,11 +34,12 @@ aira2c https://github.com/aria2/aria2
 
 ariaNG https://github.com/mayswind/AriaNg
 ## 更新
-1、将文本汉化
+~~1、将文本汉化~~ **已完成**
 
 ~~2、完善配置，因为目前每次启动会初始化~~ **已完成**
 
 ~~3、完善设置窗口，提供多种配置方式~~   **已完成**
+
 ## 注意
 本项目基于framework 4.6.2.如果它在你的电脑上不能正常工作，请检查是否安装这项服务。（win10-程序与功能-打开和关闭windows功能找到勾选4.6高级功能）
 
@@ -44,3 +48,4 @@ ariaNG https://github.com/mayswind/AriaNg
 欢迎提出问题和bug
 
 如有侵权，请联系删除。初次上传代码，见谅。
+
