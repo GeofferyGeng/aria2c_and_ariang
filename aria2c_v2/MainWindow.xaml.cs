@@ -149,7 +149,8 @@ namespace aria2c_v2
         {
             string aria2path = System.IO.Path.Combine(System.Environment.CurrentDirectory, @"aria2c.exe");
             config_default = "--enable-rpc=true --console-log-level=error --rpc-allow-origin-all=true --rpc-listen-port=6800 --save-session-interval=60  --input-file=aria2c.session --save-session=aria2c.session ";
-            test.Text = config_default+ config;
+
+            
             //MessageBox.Show(config);
             if (!File.Exists("aria2c.session"))
             {
