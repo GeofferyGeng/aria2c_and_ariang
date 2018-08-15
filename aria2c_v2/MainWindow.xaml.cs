@@ -48,6 +48,7 @@ namespace aria2c_v2
         public MainWindow()
         {
             InitializeComponent();
+            killaria2();
             loadconfig();
             startaria2();
             loadweb();
@@ -57,7 +58,7 @@ namespace aria2c_v2
         {
             if (File.Exists("aria2c.conf"))
             {
-
+               
                 string path = System.Environment.CurrentDirectory;
                 path = System.IO.Path.Combine(path, "aria2c.conf");
                 //MessageBox.Show(path);
@@ -101,7 +102,7 @@ namespace aria2c_v2
             else
             {
                 File.Create("aria2c.conf").Close();
-                
+
                 split = "160";
                 dir = @"D:\Download";
                 diskcache = "32M";
@@ -148,10 +149,10 @@ namespace aria2c_v2
         public void startaria2()
         {
             string aria2path = System.IO.Path.Combine(System.Environment.CurrentDirectory, @"aria2c.exe");
+
             config_default = "--enable-rpc=true --console-log-level=error --rpc-allow-origin-all=true --rpc-listen-port=6800 --save-session-interval=60  --input-file=aria2c.session --save-session=aria2c.session ";
 
-            
-            //MessageBox.Show(config);
+
             if (!File.Exists("aria2c.session"))
             {
                 File.Create("aria2c.session").Close();
@@ -179,6 +180,10 @@ namespace aria2c_v2
                     return;
                 }
             }
+        }
+        public void kill_all_aria2()
+        {
+            Process p = (Process.GetProcessesByName("aria2"))[0];
         }
 
 
@@ -241,13 +246,17 @@ namespace aria2c_v2
         public static bool? restart { get; set; }
         private void settingbutton_Click(object sender, RoutedEventArgs e)
         {
+            restart = false;
             Setwindow setwin = new Setwindow();
             setwin.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             setwin.ShowDialog();
+            
             if (restart == true)
             {
                 killaria2();
+                loadconfig();
                 startaria2();
+                loadweb();
             }
         }
 

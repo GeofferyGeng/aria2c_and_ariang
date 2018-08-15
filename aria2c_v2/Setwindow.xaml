@@ -399,7 +399,7 @@
             </Border>
 
 
-            <TextBlock HorizontalAlignment="Left" Margin="60,376,0,0" TextWrapping="Wrap" Text="注：当前窗口更改设置将于下次启动时应用！" FontSize="10" Foreground="Red"  VerticalAlignment="Top" Width="509"/>
+            <TextBlock HorizontalAlignment="Left" Margin="60,376,0,0" TextWrapping="Wrap" Text="注：请确保您掌握正确的格式！" FontSize="10" Foreground="Red"  VerticalAlignment="Top" Width="509"/>
 
 
         </Grid>
