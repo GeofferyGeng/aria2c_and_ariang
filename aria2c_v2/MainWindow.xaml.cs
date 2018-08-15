@@ -27,50 +27,23 @@ namespace aria2c_v2
     public partial class MainWindow : Window
     {
         
-        public string dir { get; set; }
-        public string split { get; set; }
-        public string diskcache { get; set; }
-        public string maxconcurrentdownloads { get; set; }
-        public string minsplitsize { get; set; }
-        public string maxdownloadlimit { get; set; }
-        public string followtorrent { get; set; }
-        public string btmaxpeers { get; set; }
-        public string enabledht { get; set; }
-        public string seedratio { get; set; }
-        public string continue_ { get; set; }
-        public string bttracker { get; set; }
-        public string config_to_written { get; set; }
+        public static string  dir { get; set; }
+        public static string split { get; set; }
+        public static string diskcache { get; set; }
+        public static string maxconcurrentdownloads { get; set; }
+        public static string minsplitsize { get; set; }
+        public static string maxdownloadlimit { get; set; }
+        public static string followtorrent { get; set; }
+        public static string btmaxpeers { get; set; }
+        public static string enabledht { get; set; }
+        public static string seedratio { get; set; }
+        public static string continue_ { get; set; }
+        public static string bttracker { get; set; }
+        public static string config_to_written { get; set; }
 
-        public string config { get; set; }
-        public string file_allocation { get; set; }
-        public string config_default { get; set; }
-        public void loggingconfig(string text)
-        {
-
-            try
-            {
-                string path = System.Environment.CurrentDirectory;
-
-                if (!File.Exists("aria2c.conf"))
-                {
-                    File.Create("aria2c.conf").Close();
-                }
-
-                using (
-                    var outfile =
-                        new StreamWriter(System.IO.Path.Combine(path, "aria2c.conf"), true)
-                )
-                {
-                    outfile.WriteLine(text);
-                }
-
-            }
-            catch (Exception)
-            {
-                // ignored
-            }
-
-        }
+        public static string config { get; set; }
+        public static string file_allocation { get; set; }
+        public static string config_default { get; set; }
 
         public MainWindow()
         {
@@ -128,8 +101,8 @@ namespace aria2c_v2
             else
             {
                 File.Create("aria2c.conf").Close();
-
-                split = "256";
+                
+                split = "160";
                 dir = @"D:\Download";
                 diskcache = "32M";
                 maxconcurrentdownloads = "3";
@@ -175,8 +148,9 @@ namespace aria2c_v2
         public void startaria2()
         {
             string aria2path = System.IO.Path.Combine(System.Environment.CurrentDirectory, @"aria2c.exe");
-            config_default = "--enable-rpc --console-log-level=error --rpc-allow-origin-all=true --rpc-listen-port=6800 --save-session-interval=60  --input-file=aria2.session --save-session=aria2.session";
-
+            config_default = "--enable-rpc=true --console-log-level=error --rpc-allow-origin-all=true --rpc-listen-port=6800 --save-session-interval=60  --input-file=aria2c.session --save-session=aria2c.session ";
+            test.Text = config_default+ config;
+            //MessageBox.Show(config);
             if (!File.Exists("aria2c.session"))
             {
                 File.Create("aria2c.session").Close();
@@ -207,13 +181,35 @@ namespace aria2c_v2
         }
 
 
-        protected override void OnClosed(EventArgs e)
+        public void loggingconfig(string text)
         {
-            //Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
-            //if (this.IsAfreshLogin == true) return;
-            Application.Current.Shutdown();
-            base.OnClosed(e);
+
+            try
+            {
+                string path = System.Environment.CurrentDirectory;
+
+                if (File.Exists("aria2c.conf"))
+                {
+                    File.Delete("aria2c.conf");
+                    File.Create("aria2c.conf").Close();
+                }
+
+                using (
+                    var outfile =
+                        new StreamWriter(System.IO.Path.Combine(path, "aria2c.conf"), true)
+                )
+                {
+                    outfile.WriteLine(text);
+                }
+
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
         }
+
 
         /// <summary>
         /// 窗口移动事件
@@ -241,12 +237,17 @@ namespace aria2c_v2
             this.Close();
             
         }
-
+        public static bool? restart { get; set; }
         private void settingbutton_Click(object sender, RoutedEventArgs e)
         {
             Setwindow setwin = new Setwindow();
             setwin.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             setwin.ShowDialog();
+            if (restart == true)
+            {
+                killaria2();
+                startaria2();
+            }
         }
 
         private void aboutbutton_Click(object sender, RoutedEventArgs e)

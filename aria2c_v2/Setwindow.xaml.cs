@@ -66,25 +66,25 @@ namespace aria2c_v2
 
         public void changeconfig()
         {
-            MainWindow m = new MainWindow();
-            m.split = t_split.Text;
-            m.dir = t_dir.Text;
-            m.diskcache = t_diskcache.Text;
-            m.maxconcurrentdownloads = t_maxconcurrentdownloads.Text;
-            m.maxdownloadlimit = t_maxdownloadlimit.Text;
-            m.minsplitsize = t_minsplitsize.Text;
-            m.file_allocation = t_fileallocation.Text;
-            m.followtorrent = t_followtorrent.Text;
-            m.enabledht = t_enabledht.Text;
-            m.seedratio = t_seedratio.Text;
-            m.continue_ = t_continue.Text;
-            m.btmaxpeers = t_btmaxpeers.Text;
+            //MainWindow m = new MainWindow();
+            MainWindow.split = t_split.Text;
+            MainWindow.dir = t_dir.Text;
+            MainWindow.diskcache = t_diskcache.Text;
+            MainWindow.maxconcurrentdownloads = t_maxconcurrentdownloads.Text;
+            MainWindow.maxdownloadlimit = t_maxdownloadlimit.Text;
+            MainWindow.minsplitsize = t_minsplitsize.Text;
+            MainWindow.file_allocation = t_fileallocation.Text;
+            MainWindow.followtorrent = t_followtorrent.Text;
+            MainWindow.enabledht = t_enabledht.Text;
+            MainWindow.seedratio = t_seedratio.Text;
+            MainWindow.continue_ = t_continue.Text;
+            MainWindow.btmaxpeers = t_btmaxpeers.Text;
 
 
-            config_to_be_wrriten = "{dir:" + m.dir + ",split:" + m.split + ",disk-cache:" + m.diskcache + ",max-concurrent-downloads:" +
-                m.maxconcurrentdownloads + ",max-download-limit:" + m.maxdownloadlimit + ",min-split-size:" + m.minsplitsize + ",file-allocation:" +
-                m.file_allocation + ",follow-torrent:" + m.followtorrent + ",enable-dht:" + m.enabledht + ",seed-ratio:" +
-                m.seedratio + ",continue:" + m.continue_ + ",bt-max-peers:" + m.btmaxpeers + "}";
+            config_to_be_wrriten = "{dir:" + MainWindow.dir + ",split:" + MainWindow.split + ",disk-cache:" + MainWindow.diskcache + ",max-concurrent-downloads:" +
+                MainWindow.maxconcurrentdownloads + ",max-download-limit:" + MainWindow.maxdownloadlimit + ",min-split-size:" + MainWindow.minsplitsize + ",file-allocation:" +
+                MainWindow.file_allocation + ",follow-torrent:" + MainWindow.followtorrent + ",enable-dht:" + MainWindow.enabledht + ",seed-ratio:" +
+                MainWindow.seedratio + ",continue:" + MainWindow.continue_ + ",bt-max-peers:" + MainWindow.btmaxpeers + "}";
 
             config_to_be_wrriten = config_to_be_wrriten.Replace("{","{\"");
             config_to_be_wrriten = config_to_be_wrriten.Replace("}", "\"}");
@@ -94,13 +94,11 @@ namespace aria2c_v2
 
             loggingconfig(config_to_be_wrriten);
 
-            config = "  --dir=" + m.dir + " " + "--split=" + m.split + " " + "--disk-cache=" + m.diskcache + " " + "--max-concurrent-downloads=" + m.maxconcurrentdownloads +
-                     " " + "--min-split-size=" + m.minsplitsize + " " + "--max-download-limit=" + m.maxdownloadlimit + " " + "--file-allocation=" + m.file_allocation +
-                     " " + "--continue=" + m.continue_ + " " + "--follow-torrent=" + m.followtorrent + " " + "--bt-max-peers=" + m.btmaxpeers + " " + "--enable-dht=" + m.enabledht +
-                     " " + "--seed-ratio=" + m.seedratio; //+ " " + "--bt-tracker=" + bttracker;
+            config = "  --dir=" + MainWindow.dir + " " + "--split=" + MainWindow.split + " " + "--disk-cache=" + MainWindow.diskcache + " " + "--max-concurrent-downloads=" + MainWindow.maxconcurrentdownloads +
+                     " " + "--min-split-size=" + MainWindow.minsplitsize + " " + "--max-download-limit=" + MainWindow.maxdownloadlimit + " " + "--file-allocation=" + MainWindow.file_allocation +
+                     " " + "--continue=" + MainWindow.continue_ + " " + "--follow-torrent=" + MainWindow.followtorrent + " " + "--bt-max-peers=" + MainWindow.btmaxpeers + " " + "--enable-dht=" + MainWindow.enabledht +
+                     " " + "--seed-ratio=" + MainWindow.seedratio; //+ " " + "--bt-tracker=" + bttracker;
 
-
-            kill_one_aria2();
 
         }
 
@@ -140,7 +138,7 @@ namespace aria2c_v2
         {   
 
             string aria2path = System.IO.Path.Combine(System.Environment.CurrentDirectory, @"aria2c.exe");
-            string config_default = "--enable-rpc --console-log-level=error --rpc-allow-origin-all=true --rpc-listen-port=6800 --save-session-interval=60  --input-file=aria2.session --save-session=aria2.session";
+            string config_default = "--enable-rpc=true --console-log-level=error --rpc-allow-origin-all=true --rpc-listen-port=6800 --save-session-interval=60  --input-file=aria2c.session --save-session=aria2c.session";
 
             if (!File.Exists("aria2c.session"))
             {
@@ -200,6 +198,7 @@ namespace aria2c_v2
             {
                 System.Windows.MessageBox.Show("Aria2c配置已更新！","Aria2c配置",System.Windows.MessageBoxButton.OK);
                 changeconfig();
+                MainWindow.restart = true;
                 this.Close();
                 
             }
@@ -207,11 +206,13 @@ namespace aria2c_v2
             {
                 System.Windows.MessageBox.Show("Aria2c配置将于下次启动时更新！", "Aria2c配置", System.Windows.MessageBoxButton.OK);
                 changeconfig();
+                MainWindow.restart = false;
                 this.Close();
 
             }
             else
             {
+                MainWindow.restart = null;
                 //reture;
             }
             
