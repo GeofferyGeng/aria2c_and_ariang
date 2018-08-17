@@ -1,7 +1,7 @@
 # aria2c_and_aria
-## 8102年8月15日 15th,August,8102
-### 经过连续两天的高强度工作我已经快要gg了 (:_」∠) ，之后不时或者有重大bug才更新了吧
-### I am going to die.Update until there is a big bug.
+### 8102年8月15日 15th,August,8102
+#### 经过连续两天的高强度工作我已经快要gg了 (:_」∠) ，之后不时或者有重大bug才更新了吧
+#### I am going to die.Update unless there is a big bug.
 ## introduction
 This is a simple combination of aria2c and ariaNG,thanks for the following repositories.
 
