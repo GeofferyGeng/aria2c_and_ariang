@@ -91,12 +91,14 @@
             </Button>
             <!--
                         <MediaElement Width="800"  Height="400" Source="pic\l.gif"/>
-
+                        <WebBrowser x:Name="web" HorizontalAlignment="Left" Height="468" Margin="0,32,-0.4,-2.4" VerticalAlignment="Top" Width="898"/>
             -->
-            
-            <WebBrowser x:Name="web" HorizontalAlignment="Left" Height="468" Margin="0,32,-0.4,-2.4" VerticalAlignment="Top" Width="898"/>
 
 
+
+            <DockPanel Width="900" Margin="0,32,0,0">
+                
+            </DockPanel>
         </Grid>
     </Grid>
 </Window>
