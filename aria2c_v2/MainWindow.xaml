@@ -1,5 +1,6 @@
 ﻿<Window x:Class="aria2c_v2.MainWindow" WindowStyle="None" BorderThickness="1" BorderBrush="Gray" ResizeMode="NoResize"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -95,9 +96,9 @@
             -->
 
 
-
             <DockPanel Width="900" Margin="0,32,0,0">
-                
+                <cefSharp:ChromiumWebBrowser Name="mychrome" Grid.Row="0" Address="http://aria2.b2cn.tk"/>
+
             </DockPanel>
         </Grid>
     </Grid>

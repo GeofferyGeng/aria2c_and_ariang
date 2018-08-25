@@ -141,7 +141,7 @@ namespace aria2c_v2
 
         public void loadweb()
         {
-            web.Navigate("file:///" + Environment.CurrentDirectory + @"\web\index.html");
+            //web.Navigate("file:///" + Environment.CurrentDirectory + @"\web\index.html");
             
 
         }
