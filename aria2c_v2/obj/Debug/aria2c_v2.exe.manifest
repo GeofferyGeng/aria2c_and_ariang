@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="aria2c_v2.exe" size="167904">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="aria2c_v2.exe" size="172000">
       <assemblyIdentity name="aria2c_v2" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>G8p4e02tOsGRU5a3LAPO9K6xoys8z+en8YREOdN0evI=</dsig:DigestValue>
+        <dsig:DigestValue>J4u2DAbKjDHGYOSchT7W5vDTMse6g3pmYtaHwzdU4JQ=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
