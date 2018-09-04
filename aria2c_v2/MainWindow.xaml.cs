@@ -14,9 +14,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.IO;
-using Newtonsoft.Json.Linq;
 using System.Reflection;
+using Newtonsoft.Json.Linq;
+
+
 
 namespace aria2c_v2
 {
@@ -24,6 +25,25 @@ namespace aria2c_v2
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
+    public static class WebBrowserExtensions
+    {
+        public static void SuppressScriptErrors(this WebBrowser webBrowser, bool hide)
+        {
+            FieldInfo fInfo = typeof(WebBrowser).GetField("_axIWebBrowser2", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (fInfo == null)
+            {
+                return;
+            }
+
+            object objBrowser = fInfo.GetValue(webBrowser);
+            if (objBrowser == null)
+            {
+                return;
+            }
+            objBrowser.GetType().InvokeMember("Silent", BindingFlags.SetProperty, null, objBrowser, new object[] { hide });
+        }
+    }
+
     public partial class MainWindow : Window
     {
         
@@ -140,12 +160,23 @@ namespace aria2c_v2
         }
 
         public void loadweb()
-        {
-            //web.Navigate("file:///" + Environment.CurrentDirectory + @"\web\index.html");
-            web.Navigate("http://aria2c.b2cn.tk/");
+        {   
+
+            //本地文件
+            
+            web.Navigate("file:///" + Environment.CurrentDirectory + @"\web_cn\index.html");
+
+
+            WebBrowserExtensions.SuppressScriptErrors(web, true);
+            //web-UI
+            //web.Navigate("http://aria2c.b2cn.tk/");
             //web.Navigate("http://aria2c.com/");
+            //web.Navigate("http://ariang.mayswind.net/");
 
         }
+
+
+
         //aria2c.exe start
         public void startaria2()
         {
