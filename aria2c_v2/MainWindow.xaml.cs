@@ -165,8 +165,6 @@ namespace aria2c_v2
             //本地文件
             
             web.Navigate("file:///" + Environment.CurrentDirectory + @"\web_cn\index.html");
-
-
             WebBrowserExtensions.SuppressScriptErrors(web, true);
             //web-UI
             //web.Navigate("http://aria2c.b2cn.tk/");
