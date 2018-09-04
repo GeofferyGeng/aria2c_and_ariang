@@ -135,14 +135,14 @@
 
             <MediaElement Width="800"  Height="400" Source="pic\l.gif"/>
 
-            
-            
-            
-            <DockPanel Height="500" Margin="0,32,0,0">
-                <WebBrowser x:Name="web" HorizontalAlignment="Left" Height="500" Margin="0,0,-0.4,0" VerticalAlignment="Top" Width="898"/>
-            </DockPanel>
-
 
         </Grid>
+
+        <DockPanel Margin="0,0,0,0">
+            <WebBrowser x:Name="web" HorizontalAlignment="Left" Height="466" Margin="0,32,0,-0.4" VerticalAlignment="Top" Width="898"/>
+        </DockPanel>
+
+
+
     </Grid>
 </Window>
