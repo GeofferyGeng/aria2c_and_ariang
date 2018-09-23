@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:aria2c_v2"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="MainWindow" Height="500" Width="900" MaxHeight="600" MaxWidth="900">
+        Title="MainWindow" Height="500" Width="900" MaxHeight="500" MaxWidth="900">
     <Grid>
         <Grid>
             <WrapPanel Height="32" MouseMove="TitleBar_MouseMove" Background="#CCCCCC" DockPanel.Dock="Top" Margin="0,0,0,465.6" >

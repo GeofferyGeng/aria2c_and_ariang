@@ -51,6 +51,10 @@ namespace aria2c_v2
         public MainWindow()
         {
             InitializeComponent();
+            if (File.Exists("aria2c.session"))
+            {
+                File.Delete("aria2c.session");
+            }
             killaria2();
             loadconfig();
             startaria2();
@@ -299,15 +303,15 @@ namespace aria2c_v2
 
         private void refreshbutton_Click(object sender, RoutedEventArgs e)
         {
-            if (File.Exists("aria2c.conf"))
-            {
-                File.Delete("aria2c.conf");
-            }
+            //if (File.Exists("aria2c.conf"))
+            //{
+            //    File.Delete("aria2c.conf");
+            //}
             if (File.Exists("aria2c.session"))
             {
-                File.Delete("aria2c.conf");
+                File.Delete("aria2c.session");
             }
-            killaria2();
+            kill_all_aria2();
             loadconfig();
             startaria2();
             loadweb();
