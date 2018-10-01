@@ -1,0 +1,676 @@
+<head>
+		<meta charset='utf_8'>
+		<title>↓2 MiB/s _ Aria2 Web 控制台</title>
+		<meta name='viewport' content='initial_scale=1, maximum_scale=1, minimum_scale=1, user_scalable=no, width=device_width'>
+		<meta name='author' content='Binux'>
+		<meta name='chinesizing' content='aa65535'>
+		<link href='favicon.ico' rel='shortcut icon' type='image/ico'>
+		<meta http_equiv='X_UA_Compatible' content='IE=edge'>
+		<meta name='keywords' content='aria2,aria2c,aria2 rpc,aria2 web ui,aria2 web gui,aria2 web界面,yaaw汉化'>
+		<meta name='description' content='Yet Another Aria2 Web Frontend'>
+
+		<link href='css/bootstrap.min.css' rel='stylesheet'>
+		<link href='css/bootstrap_responsive.min.css' rel='stylesheet'>
+		<link href='css/main.css' rel='stylesheet'>
+		<!__[if lt IE 9]>
+			<script src='http://html5shim.googlecode.com/svn/trunk/html5.js'></script>
+		<![endif]__>
+	</head>
+	<body>
+		<div class='container'>
+			<header class='main_head page_header'>
+				<h1>Aria2 Web 控制台</h1>
+				<span id='offline_cached'>cached</span>
+				<div class='pull_right' id='global_info'>
+					<div id='global_version'>Aria2 1.32.0</div>
+					<div id='global_speed'>
+			<i class='icon_download'></i> <span>1.86 MiB</span>/s
+				/
+			<i class='icon_upload'></i>  <span>0 KiB</span>/s
+		</div>
+				</div>
+			</header>
+
+			<div class='clearfix hide' id='main_control' style='display: block;'>
+				<div class='hide' id='main_alert' style='display: none;'>
+					<div class='alert alert_info' id='main_alert_inline'>
+						<a class='close' id='btnClearAlert' href='javascript:;'>×</a>
+						<span class='alert_msg'>正在连接...</span>
+					</div>
+				</div>
+
+				<div class='pull_left'>
+					<div class='btn_group' id='select_btn'>
+						<button title='全选' class='btn' id='select_all_btn'>
+							<i class='select_box'></i>
+						</button>
+						<a class='btn dropdown_toggle' href='javascript:;' data_toggle='dropdown'>
+							<span class='caret'></span>
+						</a>
+						<ul class='dropdown_menu'>
+							<li><a id='btnSelectActive' href='javascript:;'>选中下载中的任务</a></li>
+							<li><a id='btnSelectWaiting' href='javascript:;'>选中等待中的任务</a></li>
+							<li><a id='btnSelectPaused' href='javascript:;'>选中已暂停的任务</a></li>
+							<li><a id='btnSelectStopped' href='javascript:;'>选中已停止的任务</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<div class='pull_left' id='not_selected_grp'>
+					<div class='pull_left btn_group'>
+						<a title='添加任务' class='btn' id='add_task_btn' href='#add_task_modal' data_toggle='modal'>
+							<i class='icon_plus'></i> 添加
+						</a>
+					</div>
+					<div class='pull_left btn_group' id='do_all_btn'>
+						<a title='开始所有任务' class='btn' id='btnStartAll' href='javascript:;'>
+							<i class='icon_forward'></i>
+						</a>
+						<a title='暂停所有任务' class='btn' id='btnPauseAll' href='javascript:;'>
+							<i class='icon_stop'></i>
+						</a>
+						<a title='删除已经完成或出错的任务' class='btn' id='btnRemoveFinished' href='javascript:;'>
+							<i class='icon_trash'></i>
+						</a>
+					</div>
+				</div>
+
+				<div class='pull_left hide' id='selected_grp'>
+					<div class='btn_group'>
+						<a title='开始' class='btn' id='btnUnPause' href='javascript:;'>
+							<i class='icon_play'></i>
+						</a>
+						<a title='暂停' class='btn' id='btnPause' href='javascript:;'>
+							<i class='icon_pause'></i>
+						</a>
+						<a title='删除' class='btn' id='btnRemove' href='javascript:;'>
+							<i class='icon_remove'></i>
+						</a>
+					</div>
+					<!__<button class='btn pull_left' id='info_btn' title='Task Info'>__>
+						<!__<i class='icon_info_sign'></i> Info__>
+					<!__</button>__>
+				</div>
+
+				<div class='pull_right' id='other_grp'>
+					<div class='btn_group'>
+						<a title='刷新' class='btn' id='refresh_btn' href='javascript:;'>
+							<i class='icon_refresh'></i> 刷新
+						</a>
+						<a title='设置' class='btn' id='setting_btn' href='#setting_modal' data_toggle='modal'>
+							<i class='icon_wrench'></i>
+						</a>
+					</div>
+				</div>
+			</div>
+
+			<section id='active_tasks'>
+			<div class='section_header'>
+				<i class='icon_chevron_down'></i><b>下载中的任务</b>
+			</div>
+			<ul class='tasks_table' id='active_tasks_table'>
+			<li class='task' id='task_gid_75de20f94fe21c00' data_gid='75de20f94fe21c00' data_status='active'>
+				<div class='left_area'>
+					<div class='task_name'>
+						<i class='select_box'></i>
+						<span title='[摩登家T] S04E18.mp4'>[摩登家T] S04E18.mp4</span>
+					</div>
+					<div class='task_info'>
+						<span title='下载中' class='task_status'>
+							<i class='icon_download_alt'></i>
+						</span>
+						<span>2.55 MiB / 242.34 MiB</span>
+						
+						<span>剩余时间: 2m30s</span>
+					</div>
+				</div>
+				<div class='right_area'>
+					<div class='progress'>
+							<div class='bar' style='width: 1.05%;'> </div>
+							<div class='bar tex'>1.05%</div>
+					</div>
+					<div class='progress_info'>
+						<span class='download_speed'><i class='icon_download'></i> 1.60 MiB/s</span>
+						
+						<span class='seeders'><i title='连接数' class='icon_signal'></i> 100</span>
+						
+					</div>
+				</div>
+			</li>
+			<li class='task' id='task_gid_913b28d91839a450' data_gid='913b28d91839a450' data_status='active'>
+				<div class='left_area'>
+					<div class='task_name'>
+						<i class='select_box'></i>
+						<span title='[摩登家T] S04E17.mp4'>[摩登家T] S04E17.mp4</span>
+					</div>
+					<div class='task_info'>
+						<span title='下载中' class='task_status'>
+							<i class='icon_download_alt'></i>
+						</span>
+						<span>3.38 MiB / 244.13 MiB</span>
+						
+						<span>剩余时间: 3m50s</span>
+					</div>
+				</div>
+				<div class='right_area'>
+					<div class='progress'>
+							<div class='bar' style='width: 1.38%;'> </div>
+							<div class='bar tex'>1.38%</div>
+					</div>
+					<div class='progress_info'>
+						<span class='download_speed'><i class='icon_download'></i> 1.05 MiB/s</span>
+						
+						<span class='seeders'><i title='连接数' class='icon_signal'></i> 92</span>
+						
+					</div>
+				</div>
+			</li>
+		</ul>
+			</section>
+
+			<section id='other_tasks'>
+			<div class='section_header'>
+				<i class='icon_chevron_down'></i><b>其他任务</b>
+			</div>
+			<ul class='tasks_table' id='waiting_tasks_table'>
+		
+			<li>
+				<div class='empty_tasks'>
+					<strong>没有任务</strong>
+				</div>
+			</li>
+		</ul>
+			<ul class='tasks_table' id='stopped_tasks_table'>
+		</ul>
+			</section>
+		</div>
+
+		<ul class='dropdown_menu' id='task_contextmenu'>
+			<li class='task_restart'><a id='menuRestart' href='javascript:;'>重新开始</a></li>
+			<li class='task_start'><a id='menuStart' href='javascript:;'>开始</a></li>
+			<li class='task_pause'><a id='menuPause' href='javascript:;'>暂停</a></li>
+			<li><a id='menuRemove' href='javascript:;'>删除</a></li>
+			<li class='task_move divider'></li>
+			<li class='task_move'><a id='menuMoveTop' href='javascript:;'>移动到最上面</a></li>
+			<li class='task_move'><a id='menuMoveUp' href='javascript:;'>上移</a></li>
+			<li class='task_move'><a id='menuMoveDown' href='javascript:;'>下移</a></li>
+			<li class='task_move'><a id='menuMoveEnd' href='javascript:;'>移动到最下面</a></li>
+		</ul>
+
+		<section class='modal hide fade' id='add_task_modal'>
+		<div class='modal_header'>
+			<button class='close' data_dismiss='modal'>×</button>
+			<h3>添加任务</h3>
+		</div>
+		<div class='modal_body'>
+			<div class='alert alert_error hide' id='add_task_alert'>
+				<a class='close' id='closeAlert' href='javascript:;'>×</a>
+				<strong>错误:</strong> <span class='alert_msg'></span>
+			</div>
+			<form id='add_task_uri'>
+				<div class='input_append'>
+					<input name='uri' class='input_clear' id='uri_input' type='text' placeholder='输入HTTP, FTP 或 Magnet 链接'>
+					<span><a class='btn' id='torrent_up_btn'>上传种子<input id='torrent_up_input' type='file' accept='.torrent'></a></span>
+				</div>
+				<textarea class='input_clear hide' id='uri_textarea' placeholder='输入HTTP, FTP 或 Magnet 链接, 每行一个' rows='5'>输入HTTP, FTP 或 Magnet 链接, 每行一个</textarea>
+			</form>
+			<div id='uri_more'><span class='or_and'>∨∨∨多个链接∨∨∨</span><span class='or_and' style='display: none;'>∧∧∧单个链接∧∧∧</span></div>
+			<div id='add_task_option_wrap'>
+			<hr>
+			<form class='form_horizontal' id='add_task_option' onsubmit='$<'#add_task_uri'>.submit<>;return false'>
+				<input style='top: 0px; visibility: hidden; position: fixed;' type='submit' value='提交查询内容'>
+				<div class='control_group'>
+					<label class='control_label' for='ati_out'>文件名</label>
+					<div class='controls'>
+						<input name='out' class='input_xlarge input_clear' id='ati_out'>
+					</div>
+				</div>
+				<div class='control_group'>
+					<label class='control_label' for='ati_dir'>保存位置</label>
+					<div class='controls'>
+						<input name='dir' class='input_xlarge' id='ati_dir'>
+					</div>
+				</div>
+				<div class='clearfix'></div>
+				<div class='control_group half'>
+					<div class='controls'>
+						<label class='checkbox'>
+							<input name='pause' class='input_save' type='checkbox'>
+							添加后暂停任务
+						</label>
+					</div>
+				</div>
+<!__
+				<div class='control_group half'>
+					<div class='controls'>
+						<label class='checkbox' title='有规则的下载链接'>
+							<input type='checkbox' name='parameterized_uri' class='input_save'  />
+							参数化链接支持
+						</label>
+					</div>
+				</div>
+__>
+				<div class='clearfix'></div>
+				<div class='control_group half'>
+					<label class='control_label' for='ati_split'>分块数量</label>
+					<div class='controls'>
+						<input name='split' class='input_small input_save' id='ati_split' value='100'>
+					</div>
+				</div>
+				<div class='control_group half'>
+					<label title='同一服务器最大连接数' class='control_label' for='ati_cps'>最大连接数</label>
+					<div class='controls'>
+						<input name='max_connection_per_server' class='input_small input_save' id='ati_cps' value='16'>
+					</div>
+				</div>
+				<div class='control_group half'>
+					<label class='control_label' for='ati_sr'>种子分享率</label>
+					<div class='controls'>
+						<input name='seed_ratio' class='input_small input_save' id='ati_sr' value='1'>
+					</div>
+				</div>
+				<div class='control_group half'>
+					<label class='control_label' for='ati_st'>做种时间</label>
+					<div class='controls'>
+						<input name='seed_time' class='input_small input_save' id='ati_st' value=''>
+					</div>
+				</div>
+				<div class='clearfix'></div>
+				<div class='control_group'>
+					<label class='control_label' for='ati_header'>请求头</label>
+					<div class='controls'>
+						<textarea name='header' class='input_xlarge input_save' id='ati_header' placeholder='HTTP请求头, 作为验证需要, 一般不需要填写' warp='off'>HTTP请求头, 作为验证需要, 一般不需要填写</textarea>
+					</div>
+				</div>
+			</form>
+		</div>
+		</div>
+		<div class='modal_footer'>
+			<a class='btn btn_primary' id='add_task_submit' href='javascript:;'>添加</a>
+			<a class='btn' id='add_task_clear' href='javascript:;' data_dismiss='modal'>取消</a>
+		</div>
+		</section>
+
+		<section class='modal hide fade' id='setting_modal'>
+		<div class='modal_header'>
+			<button class='close' data_dismiss='modal'>×</button>
+			<h2>设置</h2>
+		</div>
+		<div class='modal_body'>
+			<form class='form_horizontal' id='setting_form'>
+				<fieldset>
+					<div class='control_group rpc_path_group'>
+						<label class='control_label' for='rpc_path'>JSON_RPC Path</label>
+						<div class='controls'>
+							<div class='input_append btn_group rpc_path_wrap'>
+								<input class='input_xlarge' id='rpc_path' type='text'><a disabled='' class='add_on btn dropdown_toggle' href='javascript:;'><b class='caret'></b></a>
+							</div>
+						</div>
+					</div>
+					<div class='control_group'>
+						<label class='control_label'>自动刷新</label>
+						<div class='controls'>
+							<label class='radio inline'>
+								<input name='refresh_interval' type='radio' value='1000'> 1秒
+							</label>
+							<label class='radio inline'>
+								<input name='refresh_interval' type='radio' checked='checked' value='3000'> 3秒
+							</label>
+							<label class='radio inline'>
+								<input name='refresh_interval' type='radio' value='5000'> 5秒
+							</label>
+							<label class='radio inline'>
+								<input name='refresh_interval' type='radio' value='10000'> 10秒
+							</label>
+							<label class='radio inline'>
+								<input name='refresh_interval' type='radio' value='0'> 禁用
+							</label>
+						</div>
+					</div>
+					<div class='control_group'>
+						<label class='control_label'>完成通知</label>
+						<div class='controls'>
+							<label class='radio inline'>
+								<input name='finish_notification' type='radio' value='1'> 启用
+							</label>
+							<label class='radio inline'>
+								<input name='finish_notification' type='radio' checked='checked' value='0'> 禁用
+							</label>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+			<div id='aria2_gsetting'>
+			<hr>
+			<form class='form_horizontal' id='aria2_gs_form' onsubmit='false'>
+				<div class='control_group half'>
+					<label class='control_label' for='gsi_dl'>全局下载限速</label>
+					<div class='controls'>
+						<input name='max_overall_download_limit' class='input_small' id='gsi_dl' value=''>
+					</div>
+				</div>
+				<div class='control_group half'>
+					<label class='control_label' for='gsi_ul'>全局上传限速</label>
+					<div class='controls'>
+						<input name='max_overall_upload_limit' class='input_small' id='gsi_ul' value=''>
+					</div>
+				</div>
+				<div class='control_group half'>
+					<label class='control_label' for='gsi_cd'>最多同时任务数</label>
+					<div class='controls'>
+						<input name='max_concurrent_downloads' class='input_small' id='gsi_cd' value=''>
+					</div>
+				</div>
+				<div class='control_group half'>
+					<label class='control_label' for='gsi_mss'>最小分块大小</label>
+					<div class='controls'>
+						<input name='min_split_size' class='input_small' id='gsi_mss' value=''>
+					</div>
+				</div>
+				<div class='clearfix'></div>
+
+				<div class='control_group'>
+					<label class='control_label' for='gsi_ua'>客户端伪装</label>
+					<div class='controls'>
+						<input name='user_agent' class='input_xlarge' id='gsi_ua' value=''>
+					</div>
+				</div>
+				<div class='control_group'>
+					<label class='control_label' for='gsi_dir'>默认下载目录</label>
+					<div class='controls'>
+						<input name='dir' disabled='' class='input_xlarge' id='gsi_dir' value=''>
+					</div>
+				</div>
+			</form>
+		</div>
+		</div>
+		<div class='modal_footer'>
+			<div id='copyright'>
+				作者 <a href='https://github.com/binux/yaaw' target='_blank'>Binux</a>
+				&nbsp;/&nbsp; 汉化 <a href='https://github.com/aa65535/yaaw_zh_hans' target='_blank'>aa65535</a>
+				&nbsp;/&nbsp; <a href='usage.html' target='_blank'>使用说明</a>
+			</div>
+			<a class='btn btn_success' id='saveSettings' href='javascript:;'>保存</a>
+			<a class='btn' href='javascript:;' data_dismiss='modal'>取消</a>
+		</div>
+		</section>
+
+		<script id='global_speed_tpl' type='text/mustache_template'>
+			<i class='icon_download'></i> <span>{{#_v.format_size}}{{downloadSpeed}}{{/_v.format_size}}</span>/s
+				/
+			<i class='icon_upload'></i>  <span>{{#_v.format_size}}{{uploadSpeed}}{{/_v.format_size}}</span>/s
+		</script>
+
+		<script id='active_task_tpl' type='text/mustache_template'>
+			{{#tasks}}
+			<li class='task' id='task_gid_{{gid}}' data_status='{{status}}' data_gid='{{gid}}'>
+				<div class='left_area'>
+					<div class='task_name'>
+						<i class='select_box'></i>
+						<span title='{{title}}'>{{title}}</span>
+					</div>
+					<div class='task_info'>
+						<span class='task_status' title='{{#_v.status_text}}{{status}}{{/_v.status_text}}{{#_v.error_msg}}{{errorCode}}{{/_v.error_msg}}'>
+							<i class='{{#_v.status_icon}}{{status}}{{/_v.status_icon}}'></i>
+						</span>
+						<span>{{#_v.format_size}}{{completedLength}}{{/_v.format_size}} / {{#_v.format_size}}{{totalLength}}{{/_v.format_size}}</span>
+						{{#uploadLength}}<span><已上传 {{#_v.format_size}}{{uploadLength}}{{/_v.format_size}}></span>{{/uploadLength}}
+						{{#eta}}<span>剩余时间: {{#_v.format_time}}{{eta}}{{/_v.format_time}}</span>{{/eta}}
+					</div>
+				</div>
+				<div class='right_area'>
+					<div class='progress'>
+							<div class='bar' style='width:{{progress}}%;'> </div>
+							<div class='bar tex'>{{progress}}%</div>
+					</div>
+					<div class='progress_info'>
+						{{#downloadSpeed}}<span class='download_speed'><i class='icon_download'></i> {{#_v.format_size}}{{downloadSpeed}}{{/_v.format_size}}/s</span>{{/downloadSpeed}}
+						{{#uploadSpeed}}<span class='upload_speed'><i class='icon_upload'></i> {{#_v.format_size}}{{uploadSpeed}}{{/_v.format_size}}/s</span>{{/uploadSpeed}}
+						{{#connections}}<span class='seeders'><i class='icon_signal' title='连接数'></i> {{connections}}</span>{{/connections}}
+						{{#numSeeders}}<span class='seeders'><i class='icon_magnet' title='做种数'></i> {{numSeeders}}</span>{{/numSeeders}}
+					</div>
+				</div>
+			</li>
+			{{/tasks}}
+			{{^tasks}}
+			<li>
+				<div class='empty_tasks'>
+					<strong>没有正在下载的任务</strong>
+				</div>
+			</li>
+			{{/tasks}}
+		</script>
+
+		<script id='other_task_tpl' type='text/mustache_template'>
+			{{#tasks}}
+			<li class='task' id='task_gid_{{gid}}' data_status='{{status}}' data_gid='{{gid}}' data_infohash='{{infoHash}}'>
+				<div class='left_area'>
+					<div class='task_name'>
+						<i class='select_box'></i>
+						<span title='{{title}}'>{{title}}</span>
+					</div>
+				</div>
+				<div class='right_area'>
+					<div class='task_info pull_left'>
+						<span class='task_status' title='{{#_v.status_text}}{{status}}{{/_v.status_text}}{{#_v.error_msg}}{{errorCode}}{{/_v.error_msg}}'><i class='{{#_v.status_icon}}{{status}}{{/_v.status_icon}}'></i></span>
+						<span>{{#_v.format_size}}{{totalLength}}{{/_v.format_size}}</span>
+						{{#uploadLength}}<span><up {{#_v.format_size}}{{uploadLength}}{{/_v.format_size}}>{{/uploadLength}}
+					</div>
+					<div class='pull_right'>
+						<div class='progress'>
+							<div class='bar' style='width:{{progress}}%;'> </div>
+							<div class='bar tex'>{{progress}}%</div>
+						</div>
+					</div>
+					<div class='clearfix'></div>
+				</div>
+			</li>
+			{{/tasks}}
+		</script>
+
+		<script id='info_box_tpl' type='text/mustache_template'>
+			<div class='info_box' data_gid='{{gid}}'>
+				<div class='tabbable tabs_left'>
+					<ul class='nav nav_tabs'>
+						<li class='active'><a href='#ib_status' data_toggle='tab'>状态</a></li>
+						<li><a href='#ib_files' data_toggle='tab'>文件</a></li>
+						<li><a id='ib_options_a' href='#ib_options' data_toggle='tab'>选项</a></li>
+						<li><a id='ib_peers_a' class='hide' style='display:none;' href='#ib_peers' data_toggle='tab'>用户</a></li>
+					</ul>
+					<div class='tab_content'>
+						<div class='tab_pane active' id='ib_status'> </div>
+						<div class='tab_pane' id='ib_files'>
+							<div id='ib_file_btn'>
+								<button id='ib_file_save' class='btn btn_primary'>保存</button>
+							</div>
+							<div class='file_list'></div>
+						</div>
+						<div class='tab_pane' id='ib_options'> </div>
+						<div class='tab_pane' id='ib_peers'> </div>
+					</div>
+				</div>
+			</div>
+		</script>
+
+		<script id='ib_status_tpl' type='text/mustache_template'>
+			<ul>
+				{{#uris}}<li><strong>下载链接: </strong><a target=_blank href='{{.}}'>{{.}}</a>{{/uris}}
+				{{#infoHash}}<li><strong>磁力链接: </strong><a target=_blank href='magnet:?xt=urn:btih:{{infoHash}}'>magnet:?xt=urn:btih:{{infoHash}}</a></li>{{/infoHash}}
+				<li><strong>任务大小: </strong>{{#_v.format_size}}{{totalLength}}{{/_v.format_size}} <{{#_v.format_size}}{{pieceLength}}{{/_v.format_size}} × {{numPieces}}></li>
+				<li><strong>任务状态: </strong>{{#_v.status_text}}{{status}}{{/_v.status_text}}{{#_v.error_msg}}{{errorCode}}{{/_v.error_msg}}</li>
+				<li><strong>保存路径: </strong>{{dir}}</li>
+				{{#bittorrent}}
+					{{#creationDate}}<li><strong>发布时间: </strong>{{#_v.format_date}}{{creationDate}}{{/_v.format_date}}</li>{{/creationDate}}
+					{{#comment}}<li><strong>种子注释: </strong>{{comment}}</li>{{/comment}}
+				{{/bittorrent}}
+				<li class='bitfield'><strong>文件区块: </strong>{{#_v.bitfield}}{{bitfield}}{{/_v.bitfield}}</li>
+			</ul>
+		</script>
+
+		<script id='file_tpl' type='text/mustache_template'>
+				<li>
+					<i class='select_box{{#selected}} icon_ok{{/selected}}' data_index='{{index}}'></i>
+					<span class='ib_file_title'>{{relative_title}}</span>
+					<span class='ib_file_size'> {{#_v.format_size}}{{completedLength}}{{/_v.format_size}} / {{#_v.format_size}}{{length}}{{/_v.format_size}} <{{progress}}%></span>
+				</li>
+		</script>
+
+		<script id='ib_options_tpl' type='text/mustache_template'>
+			<form id='ib_options_form' class='form_horizontal' onsubmit='false'>
+			<ul>
+				<li><span>下载限速:</span><input name='max_download_limit' class='active_allowed' value='{{max_download_limit}}' /></li>
+				<li><span>上传限速:</span><input name='max_upload_limit' class='active_allowed' value='{{max_upload_limit}}' /></li>
+				<li><span>分块数量:</span><input name='split' value='{{split}}' /></li>
+				<li><span>分块大小:</span><input name='min_split_size' value='{{min_split_size}}' /></li>
+				<li><span>最大连接数:</span><input name='max_connection_per_server' value='{{max_connection_per_server}}' /></li>
+				<li id='ib_options_btn'><div><button id='ib_options_save' class='btn btn_primary'>保存</button></div></li>
+			</form>
+		</script>
+
+		<script id='ib_peers_tpl' type='text/mustache_template'>
+			{{#.}}
+			<tr>
+				<td>{{ip}}:{{port}}</td>
+				<td>{{#_v.format_peerid}}{{peerId}}{{/_v.format_peerid}}</td>
+				<td>{{#_v.bitfield_to_percent}}{{bitfield}}{{/_v.bitfield_to_percent}}%</td>
+				<td>{{#_v.format_size}}{{downloadSpeed}}{{/_v.format_size}}/s</td>
+				<td>{{#_v.format_size}}{{uploadSpeed}}{{/_v.format_size}}/s</td>
+			</tr>
+			{{/.}}
+		</script>
+
+		<script id='other_task_empty' type='text/mustache_template'>
+			<li>
+				<div class='empty_tasks'>
+					<strong>没有任务</strong>
+				</div>
+			</li>
+		</script>
+
+		<script id='add_task_option_tpl' type='text/mustache_template'>
+			<hr />
+			<form id='add_task_option' class='form_horizontal' onsubmit='$<'#add_task_uri'>.submit<>;return false'>
+				<input type='submit' style='position:fixed;top:0;visibility:hidden'/>
+				<div class='control_group'>
+					<label class='control_label' for='ati_out'>文件名</label>
+					<div class='controls'>
+						<input id='ati_out' class='input_xlarge input_clear' name='out' />
+					</div>
+				</div>
+				<div class='control_group'>
+					<label class='control_label' for='ati_dir'>保存位置</label>
+					<div class='controls'>
+						<input id='ati_dir' class='input_xlarge' name='dir' />
+					</div>
+				</div>
+				<div class='clearfix'></div>
+				<div class='control_group half'>
+					<div class='controls'>
+						<label class='checkbox'>
+							<input type='checkbox' name='pause' class='input_save' {{#pause}}checked{{/pause}} />
+							添加后暂停任务
+						</label>
+					</div>
+				</div>
+<!__
+				<div class='control_group half'>
+					<div class='controls'>
+						<label class='checkbox' title='有规则的下载链接'>
+							<input type='checkbox' name='parameterized_uri' class='input_save' {{#parameterized_uri}}checked{{/parameterized_uri}} />
+							参数化链接支持
+						</label>
+					</div>
+				</div>
+__>
+				<div class='clearfix'></div>
+				<div class='control_group half'>
+					<label class='control_label' for='ati_split'>分块数量</label>
+					<div class='controls'>
+						<input id='ati_split' class='input_small input_save' name='split' value='{{split}}' />
+					</div>
+				</div>
+				<div class='control_group half'>
+					<label class='control_label' for='ati_cps' title='同一服务器最大连接数'>最大连接数</label>
+					<div class='controls'>
+						<input id='ati_cps' class='input_small input_save' name='max_connection_per_server' value='{{max_connection_per_server}}' />
+					</div>
+				</div>
+				<div class='control_group half'>
+					<label class='control_label' for='ati_sr'>种子分享率</label>
+					<div class='controls'>
+						<input id='ati_sr' class='input_small input_save' name='seed_ratio' value='{{seed_ratio}}' />
+					</div>
+				</div>
+				<div class='control_group half'>
+					<label class='control_label' for='ati_st'>做种时间</label>
+					<div class='controls'>
+						<input id='ati_st' class='input_small input_save' name='seed_time' value='{{seed_time}}' />
+					</div>
+				</div>
+				<div class='clearfix'></div>
+				<div class='control_group'>
+					<label class='control_label' for='ati_header'>请求头</label>
+					<div class='controls'>
+						<textarea id='ati_header' class='input_xlarge input_save' name='header' warp='off' placeholder='HTTP请求头, 作为验证需要, 一般不需要填写'>{{header}}</textarea>
+					</div>
+				</div>
+			</form>
+		</script>
+
+		<script id='aria2_global_setting_tpl' type='text/mustache_template'>
+			<hr />
+			<form id='aria2_gs_form' class='form_horizontal' onsubmit='false'>
+				<div class='control_group half'>
+					<label class='control_label' for='gsi_dl'>全局下载限速</label>
+					<div class='controls'>
+						<input id='gsi_dl' name='max_overall_download_limit' class='input_small' value='{{#_v.format_size_0}}{{max_overall_download_limit}}{{/_v.format_size_0}}' />
+					</div>
+				</div>
+				<div class='control_group half'>
+					<label class='control_label' for='gsi_ul'>全局上传限速</label>
+					<div class='controls'>
+						<input id='gsi_ul' name='max_overall_upload_limit' class='input_small' value='{{#_v.format_size_0}}{{max_overall_upload_limit}}{{/_v.format_size_0}}' />
+					</div>
+				</div>
+				<div class='control_group half'>
+					<label class='control_label' for='gsi_cd'>最多同时任务数</label>
+					<div class='controls'>
+						<input id='gsi_cd' name='max_concurrent_downloads' class='input_small' value='{{max_concurrent_downloads}}' />
+					</div>
+				</div>
+				<div class='control_group half'>
+					<label class='control_label' for='gsi_mss'>最小分块大小</label>
+					<div class='controls'>
+						<input id='gsi_mss' name='min_split_size' class='input_small' value='{{#_v.format_size_0}}{{min_split_size}}{{/_v.format_size_0}}' />
+					</div>
+				</div>
+				<div class='clearfix'></div>
+
+				<div class='control_group'>
+					<label class='control_label' for='gsi_ua'>客户端伪装</label>
+					<div class='controls'>
+						<input id='gsi_ua' name='user_agent' class='input_xlarge' value='{{user_agent}}' />
+					</div>
+				</div>
+				<div class='control_group'>
+					<label class='control_label' for='gsi_dir'>默认下载目录</label>
+					<div class='controls'>
+						<input id='gsi_dir' name='dir' class='input_xlarge' value='{{dir}}' disabled />
+					</div>
+				</div>
+			</form>
+		</script>
+
+		<script src='js/jquery_1.7.2.min.js'></script>
+		<script src='js/bootstrap.min.js'></script>
+		<script src='js/jquery.jsonrpc.min.js'></script>
+		<script src='js/jquery.Storage.min.js'></script>
+		<script src='js/jquery.base64.min.js'></script>
+		<script src='js/mustache.min.js'></script>
+		<script src='js/peerid.min.js'></script>
+		<script src='js/aria2.js'></script>
+		<script src='js/yaaw.js'></script>
+	
+
+
+</body>

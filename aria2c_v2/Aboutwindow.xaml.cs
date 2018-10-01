@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
+
 namespace aria2c_v2
 {
     /// <summary>
@@ -24,12 +25,9 @@ namespace aria2c_v2
         public Aboutwindow()
         {
             InitializeComponent();
+            
         }
-
-
-
-        
-
+ 
 
 
 

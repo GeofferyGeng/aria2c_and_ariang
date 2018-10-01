@@ -16,8 +16,12 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Reflection;
 using Newtonsoft.Json.Linq;
-
-
+using System.Text.RegularExpressions;
+using System.Globalization;
+using System.ComponentModel;
+using System.Windows.Shell;
+using System.Threading;
+using System.Windows.Threading;
 
 namespace aria2c_v2
 {
@@ -47,7 +51,7 @@ namespace aria2c_v2
         public static string config { get; set; }
         public static string file_allocation { get; set; }
         public static string config_default { get; set; }
-
+        public static double finish { set; get; }
         public MainWindow()
         {
             InitializeComponent();
@@ -56,7 +60,16 @@ namespace aria2c_v2
             startaria2();
             loadweb();
 
+
+
+
+            //taskbar process
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Tick += new EventHandler(timer_Tick);
+            timer.Interval = TimeSpan.FromSeconds(0.5);   //设置刷新的间隔时间
+            timer.Start();
         }
+
         public void loadconfig()
         {
             if (File.Exists("aria2c.conf"))
@@ -106,7 +119,7 @@ namespace aria2c_v2
             {
                 File.Create("aria2c.conf").Close();
 
-                split = "160";
+                split = "100";
                 dir = @"D:\Download";
                 diskcache = "32M";
                 maxconcurrentdownloads = "3";
@@ -141,13 +154,14 @@ namespace aria2c_v2
 
             }
         }
-
         public void loadweb()
         {   
 
             //本地文件
             
             web.Navigate("file:///" + Environment.CurrentDirectory + @"\web_cn\index.html");
+
+
             //web-UI
             //web.Navigate("http://aria2c.b2cn.tk/");
             //web.Navigate("http://aria2c.com/");
@@ -157,7 +171,9 @@ namespace aria2c_v2
 
 
 
-        //aria2c.exe start
+        /// <summary>
+        /// aria2c.exe start
+        /// </summary>
         public void startaria2()
         {
             string aria2path = System.IO.Path.Combine(System.Environment.CurrentDirectory, @"aria2c.exe");
@@ -183,7 +199,9 @@ namespace aria2c_v2
                 p.Start();
             }
         }
-        //close process aria2
+        /// <summary>
+        /// close process aria2
+        /// </summary>
         public void killaria2()
         {
             Process[] myProgress;
@@ -210,8 +228,6 @@ namespace aria2c_v2
                 }
             }
         }
-
-
         public void loggingconfig(string text)
         {
 
@@ -242,8 +258,342 @@ namespace aria2c_v2
         }
 
 
+
+        void timer_Tick(object sender, EventArgs e)
+        {
+            getpage();
+        }
+        public void write_page(string text)
+        {
+
+            try
+            {
+                string path = System.Environment.CurrentDirectory;
+
+                if (File.Exists("page.txt"))
+                {
+                    File.Delete("page.txt");
+                    File.Create("page.txt").Close();
+                }
+                using (
+                    var outfile =
+                        new StreamWriter(System.IO.Path.Combine(path, "page.txt"), true)
+                )
+                {
+                    outfile.WriteLine(text);
+                }
+            }
+            catch (Exception)
+            {
+                // ignored
+                MessageBox.Show("ERROR");
+            }
+        }
+        /// <summary>
+        /// 任务栏进度条
+        /// </summary>
+        public void getpage()
+        {
+
+            try
+            {
+                var doc2 = web.Document as mshtml.HTMLDocument;
+                string page = doc2.documentElement.innerHTML;
+                page = page.Replace("\"", "'");
+                page = page.Replace("-", "_");
+                page = page.Replace("(", "<");
+                page = page.Replace(")", ">");
+                //write_page(page);
+
+
+                var lname = new List<string>();
+                var ls = new List<string>();
+                var lp = new List<string>();
+                var lt = new List<string>();
+                var lsp = new List<string>();
+
+                Regex reg_name = new Regex(@"<span title='(.*?)' class='task-name auto-ellipsis ng-binding' ng-bind='task.taskName'>");
+                MatchCollection mc_name = reg_name.Matches(page);
+                foreach (Match m in mc_name)
+                {
+                    string r = m.Groups[1].Value.Trim();
+                    //MessageBox.Show(r);
+                    lname.Add(r);
+                }
+                Regex reg_size = new Regex(@"readableVolume'>(.*?)</span> <a title='点击查看任务详情'");
+                MatchCollection mc_size = reg_size.Matches(page);
+                foreach (Match m in mc_size)
+                {
+                    string r = m.Groups[1].Value;
+                    //MessageBox.Show(r);
+                    ls.Add(r);
+                }
+                Regex reg_p = new Regex(@"'%''>(.*?)</span></div></div>");
+                MatchCollection mc_p = reg_p.Matches(page);
+                foreach (Match m in mc_p)
+                {
+                    string r = m.Groups[1].Value.Trim();
+                    //MessageBox.Show(r);
+                    lp.Add(r);
+                }
+                Regex reg_t = new Regex(@"translate>> : ''>>'>(.*?)</span> <span class='task_download_speed");
+                MatchCollection mc_t = reg_t.Matches(page);
+                foreach (Match m in mc_t)
+                {
+                    string r = m.Groups[1].Value.Trim();
+                    //MessageBox.Show(r);
+                    lt.Add(r);
+                }
+                Regex reg_s = new Regex(@"'/s' : '_'> : ''>>'>(.*?)</span>"); //需要去重
+                MatchCollection mc_s = reg_s.Matches(page);
+                foreach (Match m in mc_s)
+                {
+                    string r = m.Groups[1].Value.Trim();
+                    //MessageBox.Show(r);
+                    lsp.Add(r);
+                }
+
+                double all = 0; int num = 0;
+                while(num < ls.Count)
+                {
+
+                    if (ls[num].Contains("GB") == true)
+                    {
+
+                        ls[num] = ls[num].Replace('G', ' ');
+                        ls[num] = ls[num].Replace('B', ' ');
+                        ls[num] = ls[num].Trim();
+                        double s = Double.Parse(ls[num]);
+                        s = s * 1024 * 1024 * 1024;
+                        s = Math.Truncate(s);
+                        ls[num] = s.ToString();
+                        all = all + s;
+                    }
+                    else if (ls[num].Contains("MB") == true)
+                    {
+                        ls[num] = ls[num].Replace('M', ' ');
+                        ls[num] = ls[num].Replace('B', ' ');
+                        ls[num] = ls[num].Trim();
+                        double s = Double.Parse(ls[num]);
+                        s = s * 1024 * 1024 * 1024;
+                        s = Math.Truncate(s);
+                        ls[num] = s.ToString();
+                        all = all + s;
+                    }
+                    else if (ls[num].Contains("KB") == true)
+                    {
+                        ls[num] = ls[num].Replace('K', ' ');
+                        ls[num] = ls[num].Replace('B', ' ');
+                        ls[num] = ls[num].Trim();
+                        double s = Double.Parse(ls[num]);
+                        s = s * 1024 * 1024;
+                        s = Math.Truncate(s);
+                        ls[num] = s.ToString();
+                        all = all + s;
+                    }
+                    else
+                    {
+                        ls[num] = ls[num].Replace('B', ' ');
+                        ls[num] = ls[num].Trim();
+                        double s = Double.Parse(ls[num]);
+                        s = Math.Truncate(s);
+                        ls[num] = s.ToString();
+                        all = all + s;
+                    }
+                    num = num + 1;
+                }
+
+                num = 0;
+                while (num < ls.Count)
+                {
+                    lp[num]= lp[num].Replace('%', ' ');
+                    lp[num] = lp[num].Trim();
+                    double s = Double.Parse(lp[num]);
+                    s = s / 100;
+                    lp[num] = s.ToString();
+                    num = num + 1;
+                }
+
+                double a = 0; int i = 0;
+                while(i<ls.Count)
+                {
+                    a =a + Double.Parse(ls[i]) * Double.Parse(lp[i]);
+                    i = i + 1;
+                }
+                finish = a / all;
+                finish = Math.Round(finish, 2);
+                //MessageBox.Show(finish.ToString("P"));
+                //finish = 0.5;
+                taskbar.ProgressState = TaskbarItemProgressState.Normal;
+                taskbar.ProgressValue = finish;
+                if (finish == 1)
+                {
+
+                }
+            }
+            catch (Exception)
+            {
+                //
+            }
+        }
+
+
+
+
+        private void online_page(object sender, RoutedEventArgs e)
+        {
+            get_online_page();
+        }
+        public void get_online_page()
+        {
+
+            try
+            {
+                var doc2 = web_test.Document as mshtml.HTMLDocument;
+                string page = doc2.documentElement.innerHTML;
+                page = page.Replace("\"", "'");
+                page = page.Replace("-", "_");
+                page = page.Replace("(", "<");
+                page = page.Replace(")", ">");
+                write_page(page);
+
+
+                var lname = new List<string>();
+                var ls = new List<string>();
+                var lp = new List<string>();
+                var lt = new List<string>();
+                var lsp = new List<string>();
+
+                //Regex reg_name = new Regex(@"<span title='(.*?)' class='task-name auto-ellipsis ng-binding' ng-bind='task.taskName'>");
+                //MatchCollection mc_name = reg_name.Matches(page);
+                //foreach (Match m in mc_name)
+                //{
+                //    string r = m.Groups[1].Value.Trim();
+                //    //MessageBox.Show(r);
+                //    lname.Add(r);
+                //}
+                //Regex reg_size = new Regex(@"readableVolume'>(.*?)</span> <a title='点击查看任务详情'");
+                //MatchCollection mc_size = reg_size.Matches(page);
+                //foreach (Match m in mc_size)
+                //{
+                //    string r = m.Groups[1].Value;
+                //    //MessageBox.Show(r);
+                //    ls.Add(r);
+                //}
+                //Regex reg_p = new Regex(@"'%''>(.*?)</span></div></div>");
+                //MatchCollection mc_p = reg_p.Matches(page);
+                //foreach (Match m in mc_p)
+                //{
+                //    string r = m.Groups[1].Value.Trim();
+                //    //MessageBox.Show(r);
+                //    lp.Add(r);
+                //}
+                //Regex reg_t = new Regex(@"translate>> : ''>>'>(.*?)</span> <span class='task_download_speed");
+                //MatchCollection mc_t = reg_t.Matches(page);
+                //foreach (Match m in mc_t)
+                //{
+                //    string r = m.Groups[1].Value.Trim();
+                //    //MessageBox.Show(r);
+                //    lt.Add(r);
+                //}
+                //Regex reg_s = new Regex(@"'/s' : '_'> : ''>>'>(.*?)</span>"); //需要去重
+                //MatchCollection mc_s = reg_s.Matches(page);
+                //foreach (Match m in mc_s)
+                //{
+                //    string r = m.Groups[1].Value.Trim();
+                //    //MessageBox.Show(r);
+                //    lsp.Add(r);
+                //}
+
+                //double all = 0; int num = 0;
+                //while (num < ls.Count)
+                //{
+
+                //    if (ls[num].Contains("GB") == true)
+                //    {
+
+                //        ls[num] = ls[num].Replace('G', ' ');
+                //        ls[num] = ls[num].Replace('B', ' ');
+                //        ls[num] = ls[num].Trim();
+                //        double s = Double.Parse(ls[num]);
+                //        s = s * 1024 * 1024 * 1024;
+                //        s = Math.Truncate(s);
+                //        ls[num] = s.ToString();
+                //        all = all + s;
+                //    }
+                //    else if (ls[num].Contains("MB") == true)
+                //    {
+                //        ls[num] = ls[num].Replace('M', ' ');
+                //        ls[num] = ls[num].Replace('B', ' ');
+                //        ls[num] = ls[num].Trim();
+                //        double s = Double.Parse(ls[num]);
+                //        s = s * 1024 * 1024 * 1024;
+                //        s = Math.Truncate(s);
+                //        ls[num] = s.ToString();
+                //        all = all + s;
+                //    }
+                //    else if (ls[num].Contains("KB") == true)
+                //    {
+                //        ls[num] = ls[num].Replace('K', ' ');
+                //        ls[num] = ls[num].Replace('B', ' ');
+                //        ls[num] = ls[num].Trim();
+                //        double s = Double.Parse(ls[num]);
+                //        s = s * 1024 * 1024;
+                //        s = Math.Truncate(s);
+                //        ls[num] = s.ToString();
+                //        all = all + s;
+                //    }
+                //    else
+                //    {
+                //        ls[num] = ls[num].Replace('B', ' ');
+                //        ls[num] = ls[num].Trim();
+                //        double s = Double.Parse(ls[num]);
+                //        s = Math.Truncate(s);
+                //        ls[num] = s.ToString();
+                //        all = all + s;
+                //    }
+                //    num = num + 1;
+                //}
+
+                //num = 0;
+                //while (num < ls.Count)
+                //{
+                //    lp[num] = lp[num].Replace('%', ' ');
+                //    lp[num] = lp[num].Trim();
+                //    double s = Double.Parse(lp[num]);
+                //    s = s / 100;
+                //    lp[num] = s.ToString();
+                //    num = num + 1;
+                //}
+
+                //double a = 0; int i = 0;
+                //while (i < ls.Count)
+                //{
+                //    a = a + Double.Parse(ls[i]) * Double.Parse(lp[i]);
+                //    i = i + 1;
+                //}
+                //finish = a / all;
+                //finish = Math.Round(finish, 2);
+                ////MessageBox.Show(finish.ToString("P"));
+                ////finish = 0.5;
+                //taskbar.ProgressState = TaskbarItemProgressState.Normal;
+                //taskbar.ProgressValue = finish;
+
+            }
+            catch (Exception)
+            {
+                //
+            }
+        }
+
+
+
+
+
+
         /// <summary>
         /// 窗口移动事件
+        /// 窗口最大化最小化
         /// </summary>
         private void TitleBar_MouseMove(object sender, MouseEventArgs e)
         {
@@ -252,16 +602,10 @@ namespace aria2c_v2
                 this.DragMove();
             }
         }
-        /// <summary>
-        /// 窗口最小化
-        /// </summary>
         private void btn_min_Click(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Minimized; //设置窗口最小化
         }
-        /// <summary>
-        /// 窗口关闭
-        /// </summary>
         private void btn_close_Click(object sender, RoutedEventArgs e)
         {
             killaria2();
@@ -285,32 +629,55 @@ namespace aria2c_v2
             }
         }
 
+
+
+
+
+        /// <summary>
+        /// 主窗口功能按钮
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void aboutbutton_Click(object sender, RoutedEventArgs e)
         {
             Aboutwindow aboutwin = new Aboutwindow();
             aboutwin.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             aboutwin.ShowDialog();
         }
-
         private void openbutton_Click(object sender, RoutedEventArgs e)
         {
             Process.Start("explorer.exe ", dir);
         }
-
         private void refreshbutton_Click(object sender, RoutedEventArgs e)
         {
-            if (File.Exists("aria2c.conf"))
+
+            MessageBoxResult r2 = System.Windows.MessageBox.Show("将要进行重置？", "警告", MessageBoxButton.OKCancel);
+            if (r2 == MessageBoxResult.OK)
             {
-                File.Delete("aria2c.conf");
+                if (File.Exists("aria2c.conf"))
+                {
+                    File.Delete("aria2c.conf");
+                }
+                if (File.Exists("aria2c.session"))
+                {
+                    File.Delete("aria2c.session");
+                }
+                killaria2();
+                loadconfig();
+                startaria2();
+                loadweb();
             }
-            if (File.Exists("aria2c.session"))
+            else
             {
-                File.Delete("aria2c.conf");
+                //reture
             }
-            killaria2();
-            loadconfig();
-            startaria2();
-            loadweb();
+            
         }
+
+        
     }
+
+
+
+
 }

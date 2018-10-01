@@ -54,8 +54,8 @@
 
             <Border CornerRadius="10" BorderThickness="1.5" BorderBrush="Gray" Margin="29,55,28.6,40.6" >
                 <Grid Margin="1.4,8.4,-1.6,-8.2">
-                    <TextBox Name="t_about" BorderThickness="0" FontSize="13" Text="      这是一个将aria&#xD;&#xA;2c与ariaNG结合的应用,如果有任何问题或者建议欢迎在GitHub留言.感谢您的使用." TextWrapping="Wrap" Margin="23,42,187.8,62"/>
-                    <Image Source="pic\2.png" Height="95" Width="95" Margin="201,41,41.8,63"/>
+                    <TextBox Name="t_about" BorderThickness="0" FontSize="12" Text="      这是一个将aria&#xA;2c与ariaNG结合的应用。如果有任何问题或者建议欢迎在GitHub留言.感谢您的使用." TextWrapping="Wrap" Margin="26,54,185.2,61.8"/>
+                    <Image Source="pic\2.png" Height="95" Width="95" Margin="201,48,41.2,55.8"/>
                     <TextBox HorizontalAlignment="Left" Height="120" Width="1" Margin="168,32,0,0" BorderThickness="1" BorderBrush="Gray" TextWrapping="Wrap"  VerticalAlignment="Top" />
                 </Grid>
             </Border>
