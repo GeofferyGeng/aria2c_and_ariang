@@ -55,10 +55,6 @@ namespace aria2c_v2
         public MainWindow()
         {
             InitializeComponent();
-            if (File.Exists("aria2c.session"))
-            {
-                File.Delete("aria2c.session");
-            }
             killaria2();
             loadconfig();
             startaria2();
@@ -186,7 +182,9 @@ namespace aria2c_v2
 
             if (!File.Exists("aria2c.exe"))
             {
-                MessageBox.Show("当前目录缺少aria2c.exe");
+                MessageBox.Show("当前目录缺少aria2c.exe,启动失败！", "警告");
+                this.Close();
+                //this.Close();
             }
 
             if (!File.Exists("aria2c.session"))
@@ -654,7 +652,6 @@ namespace aria2c_v2
         }
         private void refreshbutton_Click(object sender, RoutedEventArgs e)
         {
-<<<<<<< HEAD
 
             MessageBoxResult r2 = System.Windows.MessageBox.Show("将要进行重置？", "警告", MessageBoxButton.OKCancel);
             if (r2 == MessageBoxResult.OK)
@@ -677,20 +674,6 @@ namespace aria2c_v2
                 //reture
             }
             
-=======
-            //if (File.Exists("aria2c.conf"))
-            //{
-            //    File.Delete("aria2c.conf");
-            //}
-            if (File.Exists("aria2c.session"))
-            {
-                File.Delete("aria2c.session");
-            }
-            kill_all_aria2();
-            loadconfig();
-            startaria2();
-            loadweb();
->>>>>>> 8422520e526fe779d61ad11b0f47dc840301bf6c
         }
 
         
