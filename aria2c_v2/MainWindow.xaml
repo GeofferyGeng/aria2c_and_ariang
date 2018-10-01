@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:aria2c_v2"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
+<<<<<<< HEAD
         Title="下载管理" Height="500" Width="900" MaxHeight="600" MaxWidth="900">
     <Window.TaskbarItemInfo >
         <TaskbarItemInfo x:Name="taskbar"></TaskbarItemInfo>
@@ -13,6 +14,9 @@
 
 
 
+=======
+        Title="MainWindow" Height="500" Width="900" MaxHeight="500" MaxWidth="900">
+>>>>>>> 8422520e526fe779d61ad11b0f47dc840301bf6c
     <Grid>
         <Grid>
             <WrapPanel Height="32" MouseMove="TitleBar_MouseMove" Background="#CCCCCC" DockPanel.Dock="Top" Margin="0,0,0,465.6" >
